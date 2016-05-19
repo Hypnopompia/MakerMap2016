@@ -1,0 +1,11 @@
+/vendor
+/node_modules
+/public/storage
+Homestead.yaml
+Homestead.json
+.env
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

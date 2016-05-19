@@ -13,7 +13,8 @@ function initMap() {
 particle.getEventStream({ name: 'makermap2016', auth: '200f73ada240a94f24001e0c9d4500683fce7777' }).then(function(stream) {
 
 	stream.on('event', function(data) {
-		console.log("Event: " + data);
+		console.log("Event: ");
+		console.log(data);
 	});
 
 	stream.on('error', function(err) {

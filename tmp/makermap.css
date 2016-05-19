@@ -6,3 +6,8 @@ body, html {
 #map {
 	height: 100%;
 }
+
+#legend {
+	background: white;
+	padding: 10px;
+}
