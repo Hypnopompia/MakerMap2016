@@ -1,21 +1,20 @@
 var map;
-var trackers;
+var trackers = {};
 var markers = [];
 
+setInterval(displayTrackers, 60 * 1000);
+
 function initMap() {
-	console.log('map init');
 	map = new google.maps.Map(document.getElementById('map'), {
-		center: {lat: 37.753849, lng: -122.389618},
+		center: {lat: 37.5462659, lng: -122.3010707},
 		zoom: 17, // 19
 		mapTypeId: google.maps.MapTypeId.ROADMAP // HYBRID
 	});
 
-	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('legend'));
+	map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('legend'));
 
-	$.get('/tracker.list', function(data){
-		trackers = data.trackers;
-		displayTrackers();
-	});
+	loadTrackers();
+	setInterval(loadTrackers, 10 * 60 * 1000);
 
 	// var myloc = new google.maps.Marker({
 	// 	clickable: false,
@@ -40,12 +39,19 @@ function initMap() {
 
 }
 
+function loadTrackers() {
+	$.get('/tracker.list', function(data){
+		trackers = data.trackers;
+		displayTrackers();
+	});
+}
+
 function displayTrackers() {
 	clearMarkers();
 	$('#legend').empty();
 	$.each(trackers, function(id, tracker){
-		console.log(tracker);
 		var location=new google.maps.LatLng(tracker.latitude, tracker.longitude);
+		var updatedTime = moment.utc(tracker.updated_at);
 
 		marker = new google.maps.Marker({
 			position: location,
@@ -59,7 +65,7 @@ function displayTrackers() {
 		map.panTo(marker.getPosition());
 
 
-		$('#legend').append('<img src="' + tracker.icon + '" /> ' + tracker.name + ' - ' + tracker.battery + '%<br/>');
+		$('#legend').append('<div class="tracker"><div class="trackerName"><img src="' + tracker.icon + '" /> ' + tracker.name + '</div><div class="battery"><img src="/icons/battery.png" /> ' + tracker.battery + '%</div><div class="age">' + updatedTime.startOf('hour').fromNow() + '</div></div>');
 	});
 }
 
@@ -71,7 +77,7 @@ function clearMarkers() {
 }
 
 // Enable pusher logging - don't include this in production
-Pusher.logToConsole = true;
+// Pusher.logToConsole = true;
 
 var pusher = new Pusher('0c0967444f7e2687dcdd', {
 	encrypted: true

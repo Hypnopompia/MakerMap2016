@@ -11,8 +11,38 @@ body, html {
 	background: white;
 	padding: 10px;
 	font-size: 15pt;
+	width: 200px;
+	border: 1px solid black;
 }
 
 #legend img {
 	vertical-align: middle;
+}
+
+.tracker {
+	border-bottom: 1px solid lightgrey;
+	margin-bottom: 3px;
+	height: 36px;
+}
+
+.trackerName {
+	height: 32px;
+	width: 110px;
+	float: left;
+}
+
+.battery {
+	font-size: 9pt;
+	height: 16px;
+	margin-left: 100px;
+}
+
+.battery img {
+	height: 16px;
+}
+
+.age {
+	font-size: 9pt;
+	height: 16px;
+	margin-left: 100px;
 }

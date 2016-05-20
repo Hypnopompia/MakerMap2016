@@ -18,7 +18,7 @@ class TrackerController extends Controller
 	}
 
 	public function listtrackers(Request $request) {
-		return response()->json([ 'ok' => true, 'trackers' => Tracker::where('enabled', true)->get()->keyBy('id') ]);
+		return response()->json([ 'ok' => true, 'trackers' => Tracker::where('enabled', true)->upToDate()->get()->keyBy('id') ]);
 	}
 
 	public function update(Request $request) {
@@ -47,8 +47,14 @@ class TrackerController extends Controller
 			$tracker->deviceid = $deviceid;
 		}
 
-		$tracker->latitude = $lat;
-		$tracker->longitude = $lon;
+		if ($lat != 'null') {
+			$tracker->latitude = $lat;
+		}
+
+		if ($lon != 'null') {
+			$tracker->longitude = $lon;
+		}
+
 		$tracker->battery = $batt;
 		$tracker->name = $name;
 		$tracker->save();

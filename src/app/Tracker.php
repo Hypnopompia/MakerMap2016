@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Events\TrackerUpdated;
 
+use Carbon\Carbon;
+
 class Tracker extends Model {
 	use SoftDeletes;
 
@@ -27,7 +29,13 @@ class Tracker extends Model {
 		parent::boot();
 
 		Tracker::saved(function ($tracker) {
-			event(new TrackerUpdated($tracker));
+			if ($tracker->enabled) {
+				event(new TrackerUpdated($tracker));
+			}
 		});
+	}
+
+	public function scopeUpToDate($query) {
+		return $query->where('updated_at', '>=', Carbon::now()->subMinutes(60)->toDateTimeString());
 	}
 }
