@@ -1,1 +1,0 @@
-curl -s http://mf.particle.io/tracker.list
