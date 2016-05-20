@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Events\TrackerUpdated;
+use App\Trackerlog;
 
 use Carbon\Carbon;
 
@@ -32,10 +33,22 @@ class Tracker extends Model {
 			if ($tracker->enabled) {
 				event(new TrackerUpdated($tracker));
 			}
+
+			$trackerlog = new Trackerlog;
+			$trackerlog->tracker_id = $tracker->id;
+			$trackerlog->latitude = $tracker->latitude;
+			$trackerlog->longitude = $tracker->longitude;
+			$trackerlog->battery = $tracker->battery;
+			$trackerlog->save();
+
 		});
 	}
 
 	public function scopeUpToDate($query) {
 		return $query->where('updated_at', '>=', Carbon::now()->subMinutes(60)->toDateTimeString());
+	}
+
+	public function trackerlogs() {
+		return $this->hasMany('App\Trackerlog');
 	}
 }
