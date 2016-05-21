@@ -62,7 +62,7 @@ function displayTrackers() {
 		markers.push(marker);
 
 		marker.setMap(map);
-		map.panTo(marker.getPosition());
+		// map.panTo(marker.getPosition());
 
 
 		$('#legend').append('<div class="tracker"><div class="trackerName"><img src="' + tracker.icon + '" /> ' + tracker.name + '</div><div class="battery"><img src="/icons/battery.png" /> ' + tracker.battery + '%</div><div class="age">' + updatedTime.fromNow() + '</div></div>');
